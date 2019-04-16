@@ -22,3 +22,9 @@ const Eigen::Matrix<double, States, Inputs>&
 StateSpacePlant<States, Inputs, Outputs>::B() const {
     return get_coeffecients().B;
 }
+
+template <uint32_t States, uint32_t Inputs, uint32_t Outputs>
+double StateSpacePlant<States, Inputs, Outputs>::B(uint32_t row, uint32_t column) const {
+    return get_coeffecients().B;
+}
+
