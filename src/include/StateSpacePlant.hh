@@ -29,7 +29,7 @@ class StateSpacePlant {
          * @param plantCoeffs Plant coeffecients
          */ 
 
-        explicit StateSpacePlant(const StateSpacePlantCoeffs<States, Inputs, Outputs>& plantCoeffs);
+        StateSpacePlant(const StateSpacePlantCoeffs<States, Inputs, Outputs>& plantCoeffs);
 
         /**
          * Returns the system matrix A
@@ -186,7 +186,16 @@ class StateSpacePlant {
          * @param u control input
          */
 
-        void update_X(const Eigen::Matrix<double, States, 1>& x, const Eigen::Matrix<double, Inputs, 1>& u) const;
+        Eigen::Matrix<double, States, 1> update_X(const Eigen::Matrix<double, States, 1>& x, const Eigen::Matrix<double, Inputs, 1>& u) const;
+
+        /**
+         * Computes the new y given the control input.
+         *
+         * This should be used when setting x manually to update y separately.
+         *
+         * @param u The control input.
+   */
+        Eigen::Matrix<double, Outputs, 1> update_Y(const Eigen::Matrix<double, Inputs, 1>& u) const;
 
 
     private:

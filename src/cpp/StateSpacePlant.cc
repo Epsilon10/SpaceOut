@@ -25,6 +25,29 @@ StateSpacePlant<States, Inputs, Outputs>::B() const {
 
 template <uint32_t States, uint32_t Inputs, uint32_t Outputs>
 double StateSpacePlant<States, Inputs, Outputs>::B(uint32_t row, uint32_t column) const {
-    return get_coeffecients().B;
+    return B()(row, column);
+}
+
+template <uint32_t States, uint32_t Inputs, uint32_t Outputs>
+void StateSpacePlant<States, Inputs, Outputs>::update(const Eigen::Matrix<double, Inputs, 1>& u) {
+    //check u
+    _X = update_X(X(), u);
+    _Y = update_Y(u);
+}
+
+template <uint32_t States, uint32_t Inputs, uint32_t Outputs>
+Eigen::Matrix<double, States, 1> StateSpacePlant<States, Inputs, Outputs>::update_X(const Eigen::Matrix<double, States, 1> x,
+    const Eigen::Matrix<double, Inputs, 1>& u) {
+        return A() * x + B() * u;
+}
+
+template <uint32_t States, uint32_t Inputs, uint32_t Outputs>
+Eigen::Matrix<double, Outputs, 1> StateSpacePlant<States, Inputs, Outputs>::update_Y(const Eigen::Matrix<double, Inputs, 1>& u) const {
+    return C() * x + D() * u;
+}
+
+template <uint32_t States, uint32_t Inputs, uint32_t Outputs>
+void StateSpacePlant<States, Inputs, Outputs>::add_coeffecients(const StateSpacePlantCoeffs<States, Inputs, Outputs>& plantCoeffs) {
+    gains.push_back(plantCoeffs);
 }
 
